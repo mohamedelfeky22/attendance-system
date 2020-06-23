@@ -1,0 +1,57 @@
+﻿@model Attendance_System.Models.LoginViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width;initial-scale=1.0" />
+    <title>Login - Learning Course  </title>
+    <link rel="stylesheet" href="~/Content/login.css" />
+</head>
+<body>
+
+    <div class="container">
+        <div class="login-container">
+            @using (Html.BeginForm())
+            {
+                <div class="errors">
+                    @Html.ValidationSummary()
+                </div>
+                <div class="login-shadow">
+                    <img src="https://www.brandbucket.com/sites/default/files/logo_uploads/281266/large_techthesis.png" />
+                    <div class="control-container">
+                        @Html.AntiForgeryToken()
+                        <div class="control-group">
+                            @Html.TextBoxFor(a => a.UserName, new { @class = "username", placeholder ="user-name" , id = "username" })
+                            <span class="my-text-danger">@Html.ValidationMessageFor(a => a.UserName, null, new { @class = "validate" })</span>
+                        </div>
+                        <div class="control-group">
+                            @Html.PasswordFor(a => a.Password, new { @class = "password", placeholder ="password" , id = "password" })
+                            <span class="my-text-danger">@Html.ValidationMessageFor(a => a.Password)</span>
+                        </div>
+                        <div class="control-group box-container">
+                            @Html.CheckBoxFor(a => a.RememberMe) <span class="remember">RememberMe</span>
+                        </div>
+
+                        <div class="control-group">
+                            <button class="btn-submit">Login</button>
+                        </div>
+                    </div>
+                 
+
+                </div>
+            }
+        </div>
+
+
+
+    </div>
+
+
+
+   
+    <script src="~/Scripts/jquery-1.12.4.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+</body>
+</html>

@@ -1,0 +1,98 @@
+﻿@model Attendance_System.ViewModels.SecurityAttendenceViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Attendence</h2>
+@section styles{
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+}
+
+<br />
+<div class="jumbotron" style="padding: 15px 20px 0 20px !important; margin-bottom: 0 !important;">
+    @using (Html.BeginForm())
+    {
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    @Html.DropDownList("Departments", null, new { @class = "form-control", id = "departmentdropDown" })
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="form-group">
+
+                    <select id="attendType" class="form-control">
+                        <option value="1">Arrival</option>
+                        <option value="2">Departue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-success" type="button" id="btnSubmit" value="Show List" />
+            </div>
+        </div>
+    }
+</div>
+<br />
+
+
+<div id="stdList"></div>
+
+@section scripts{
+    <script src="~/Scripts/sweetalert.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnSubmit").on("click", function () {
+
+                $.ajax({
+                    url: "/Security/GetStudents",
+                    data: { DeptId: $("#departmentdropDown").val(), attendType: $("#attendType").val() },
+                    success: function (data) {
+                        $("#stdList").html(data);
+                    }
+
+                });
+            });
+
+            $("#stdList").on("click", "#btn-arrival", function () {
+                var usei = $(this).attr("stdId");
+                var element = $(this);
+                $.ajax({
+                    url: "/Security/ArrivalAction",
+                    data: { UserID: usei },
+                    method: "POST",
+                    success: function (data) {
+                        if (data.status == "ok") {
+                            swal("Good job!", "You clicked the button!", "success");
+                        }
+                        element.remove();
+                    }
+                });
+            });
+            $("#stdList").on("click", "#btn-departure", function () {
+                var usei = $(this).attr("stdId");
+                var element = $(this);
+
+                $.ajax({
+                    url: "/Security/DepartureAction",
+                    data: { UserID: usei },
+                    method: "POST",
+                    success: function (data) {
+                        if (data.status == "ok") {
+                            swal("Good job!", "You clicked the button!", "success");
+                        }
+                        element.remove();
+                    }
+                });
+
+            });
+
+
+
+        });
+    </script>
+}
